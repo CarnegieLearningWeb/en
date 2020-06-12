@@ -1,13 +1,11 @@
-# Put the en library in the same folder as your script so NodeBox can find
-# the library. It takes some time to load all the data the first time.
-try:
-    # This is the statement you normally use.
-    en = ximport("en")
-except:
-    # But since these examples are "inside" the library
-    # we may need to try something different when
-    # the library is not located in /Application Support
-    en = ximport("__init__")
+#! /usr/bin/python2
+# -*- coding: utf-8 -*-
+
+import en
+
+# This file just runs some tests to see if en is working.
+# To run it, cd to the directory just above en, then
+# python2 < _en-test.py
 
 # LEXICAL CATEGORIZATION ############################################################
 
