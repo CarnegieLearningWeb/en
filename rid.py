@@ -313,7 +313,7 @@ class RIDResults:
 
 WORD_REGEX = re.compile(r'[^a-zA-Z]+')
 def tokenize(string):
-  tokens = WORD_REGEX.split(str.lower())
+  tokens = WORD_REGEX.split(string.lower())
   tokens = [token for token in tokens if len(token) > 0]
   return tokens
 
