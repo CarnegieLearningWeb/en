@@ -815,7 +815,7 @@ class Dictionary:
         return "<%s.%s instance for %s>" % (self.__module__, "Dictionary", self.pos)
     
     def getWord(self, form, line=None):
-        key = string.replace(string.lower(form), ' ', '_')
+        key = string.replace(str.lower(form), ' ', '_')
         pos = self.pos
         def loader(key=key, line=line, indexFile=self.indexFile):
             line = line or indexFile.get(key)
@@ -1124,7 +1124,7 @@ def _equalsIgnoreCase(a, b):
     >>> _equalsIgnoreCase('dOg', 'DOG')
     1
     """
-    return a == b or string.lower(a) == string.lower(b)
+    return a == b or str.lower(a) == str.lower(b)
 
 #
 # File utilities

@@ -69,7 +69,7 @@ class Chat(object):
         """
 
         words = ""
-        for word in string.split(string.lower(str)):
+        for word in string.split(str.lower(str)):
             if word in self._reflections:
                 word = self._reflections[word]
             words += ' ' + word

@@ -508,7 +508,7 @@ class Porter(StemI):
         return self.b[self.k0:self.k+1]
 
     def adjust_case(self, word, stem):
-        lower = string.lower(word)
+        lower = str.lower(word)
 
         ret = ""
 
@@ -534,7 +534,7 @@ class Porter(StemI):
     #        if ((2 * i) + 1) < len(parts):
     #            separator = parts[(2 * i) + 1]
     #
-    #        stem = self.stem_word(string.lower(word), 0, len(word) - 1)
+    #        stem = self.stem_word(str.lower(word), 0, len(word) - 1)
     #        ret = ret + self.adjust_case(word, stem)
     #        ret = ret + separator
     #    return ret
@@ -542,7 +542,7 @@ class Porter(StemI):
     ## --NLTK--
     ## Define a stem() method that implements the StemmerI interface.
     def stem(self, word):
-        stem = self.stem_word(string.lower(word), 0, len(word) - 1)
+        stem = self.stem_word(str.lower(word), 0, len(word) - 1)
         return self.adjust_case(word, stem)
 
     ## --NLTK--

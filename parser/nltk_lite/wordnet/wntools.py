@@ -141,7 +141,7 @@ def equalsIgnoreCase(a, b):
     1
     """
     # test a == b first as an optimization where they're equal
-    return a == b or string.lower(a) == string.lower(b)
+    return a == b or str.lower(a) == str.lower(b)
 
 
 #
