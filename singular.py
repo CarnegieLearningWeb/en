@@ -42,7 +42,7 @@ singular_rules = [
     ['(?i)(s)eries$' , '\\1eries'],
     ['(?i)([^aeiouy]|qu)ies$' , '\\1y'],
 
-	# Certain words ending in -f or -fe take -ves in the plural (lives, wolves).
+    # Certain words ending in -f or -fe take -ves in the plural (lives, wolves).
     ["([aeo]l)ves$", "\\1f"],
     ["([^d]ea)ves$", "\\1f"],
     ["arves$", "arf"],
@@ -123,13 +123,13 @@ plural_prepositions = ["about", "above", "across", "after", "among", "around", "
 def singular(word, custom={}):
 
     if word in list(custom.keys()):
-		return custom[word]
+        return custom[word]
 
-	# Recursion of compound words (e.g. mothers-in-law). 
+    # Recursion of compound words (e.g. mothers-in-law). 
     if "-" in word:
         words = word.split("-")
         if len(words) > 1 and words[1] in plural_prepositions:
-	        return singular(words[0], custom)+"-"+"-".join(words[1:])
+            return singular(words[0], custom)+"-"+"-".join(words[1:])
 
     lower_cased_word = word.lower()
     for w in singular_uninflected:

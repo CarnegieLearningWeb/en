@@ -22,102 +22,102 @@ import re
 
 class PartOfSpeechTagger:
     
-	"""
-	Original Copyright (C) Mark Watson.  All rights reserved.
-	Python port by Jason Wiener (http://www.jasonwiener.com)
+    """
+    Original Copyright (C) Mark Watson.  All rights reserved.
+    Python port by Jason Wiener (http://www.jasonwiener.com)
     
-	THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
-	KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-	IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
-	PARTICULAR PURPOSE.
+    THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY
+    KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+    IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A
+    PARTICULAR PURPOSE.
     
-	"""
-	
-	lexHash = {}
-	
-	def __init__(self):
+    """
+    
+    lexHash = {}
+    
+    def __init__(self):
 
-		if(len(self.lexHash) == 0):
-			import os
-			path = os.path.join(os.path.dirname(__file__), "Brill_lexicon")
-			upkl = open(path, 'r')
-			self.lexHash = pickle.load(upkl)
-			upkl.close()
+        if(len(self.lexHash) == 0):
+            import os
+            path = os.path.join(os.path.dirname(__file__), "Brill_lexicon")
+            upkl = open(path, 'r')
+            self.lexHash = pickle.load(upkl)
+            upkl.close()
 
-	def tokenize(self,s):
+    def tokenize(self,s):
 
-		v = []
-		reg = re.compile('(\S+)\s')
-		m = reg.findall(s+" ");
-		
-		for m2 in m:
-			if len(m2) > 0:
-				if m2.startswith("("):
-					v.append(m2[0])
-					m2 = m2[1:]
-				if m2.endswith(";") \
-				or m2.endswith(",") \
-				or m2.endswith("?") \
-				or m2.endswith(")") \
-				or m2.endswith(":") \
-				or m2.endswith(".") \
-				or m2.endswith("!"):
-					v.append(m2[0:-1])
-					v.append(m2[-1])
-				else:
-					v.append(m2)
+        v = []
+        reg = re.compile('(\S+)\s')
+        m = reg.findall(s+" ");
+        
+        for m2 in m:
+            if len(m2) > 0:
+                if m2.startswith("("):
+                    v.append(m2[0])
+                    m2 = m2[1:]
+                if m2.endswith(";") \
+                or m2.endswith(",") \
+                or m2.endswith("?") \
+                or m2.endswith(")") \
+                or m2.endswith(":") \
+                or m2.endswith(".") \
+                or m2.endswith("!"):
+                    v.append(m2[0:-1])
+                    v.append(m2[-1])
+                else:
+                    v.append(m2)
 
-		return v
+        return v
 
-	def tag(self,words):
-		
-		ret = []
-		for i in range(len(words)):
-			ret.append("NN") #the default entry
-			if words[i] in self.lexHash:
-				ret[i] = self.lexHash[words[i]]
-			elif words[i].lower() in self.lexHash:
-				ret[i] = self.lexHash[words[i].lower()]
+    def tag(self,words):
+        
+        ret = []
+        for i in range(len(words)):
+            ret.append("NN") #the default entry
+            if words[i] in self.lexHash:
+                ret[i] = self.lexHash[words[i]]
+            elif words[i].lower() in self.lexHash:
+                ret[i] = self.lexHash[words[i].lower()]
 
-		#apply transformational rules
-		for i in range(len(words)):
-			
-			#rule 1 : DT, {VBD | VBP} --> DT, NN
-			if i > 0 and ret[i-1] == "DT":
-				if ret[i] == "VBD" or ret[i] == "VBP" or ret[i] == "VB":
-					ret[i] = "NN"
+        #apply transformational rules
+        for i in range(len(words)):
+            
+            #rule 1 : DT, {VBD | VBP} --> DT, NN
+            if i > 0 and ret[i-1] == "DT":
+                if ret[i] == "VBD" or ret[i] == "VBP" or ret[i] == "VB":
+                    ret[i] = "NN"
 
-			#rule 2: convert a noun to a number (CD) if "." appears in the word
-			if ret[i].startswith("N"):
-				if words[i].find(".") > -1:
-					ret[i] = "CD"
+            #rule 2: convert a noun to a number (CD) if "." appears in the word
+            if ret[i].startswith("N"):
+                if words[i].find(".") > -1:
+                    ret[i] = "CD"
 
-			# rule 3: convert a noun to a past participle if ((string)words[i]) ends with "ed"
-			if ret[i].startswith("N") and words[i].endswith("ed"):
-				ret[i] = "VBN"
+            # rule 3: convert a noun to a past participle if ((string)words[i]) ends with "ed"
+            if ret[i].startswith("N") and words[i].endswith("ed"):
+                ret[i] = "VBN"
 
-			# rule 4: convert any type to adverb if it ends in "ly"
-			if words[i].endswith("ly"):
-				ret[i] = "RB"
+            # rule 4: convert any type to adverb if it ends in "ly"
+            if words[i].endswith("ly"):
+                ret[i] = "RB"
 
-			# rule 5: convert a common noun (NN or NNS) to a adjective if it ends with "al"
-			if ret[i].startswith("NN") and words[i].endswith("al"):
-				ret[i] = "JJ"
+            # rule 5: convert a common noun (NN or NNS) to a adjective if it ends with "al"
+            if ret[i].startswith("NN") and words[i].endswith("al"):
+                ret[i] = "JJ"
 
-			# rule 6: convert a noun to a verb if the preceeding work is "would"
-			if i > 0 and ret[i].startswith("NN") and words[i - 1].lower() == "would":
-				ret[i] = "VB"
+            # rule 6: convert a noun to a verb if the preceeding work is "would"
+            if i > 0 and ret[i].startswith("NN") and words[i - 1].lower() == "would":
+                ret[i] = "VB"
 
-			# rule 7: if a word has been categorized as a common noun and it ends with "s",
-			# then set its type to plural common noun (NNS)
-			if ret[i] == "NN" and words[i].endswith("s"):
-				ret[i] = "NNS"
+            # rule 7: if a word has been categorized as a common noun and it ends with "s",
+            # then set its type to plural common noun (NNS)
+            if ret[i] == "NN" and words[i].endswith("s"):
+                ret[i] = "NNS"
 
-			# rule 8: convert a common noun to a present participle verb (i.e., a gerand)
-			if ret[i].startswith("NN") and words[i].endswith("ing"):
-				ret[i] = "VBG"
+            # rule 8: convert a common noun to a present participle verb (i.e., a gerand)
+            if ret[i].startswith("NN") and words[i].endswith("ing"):
+                ret[i] = "VBG"
 
-		return ret
+        return ret
 
 pos_tagger = PartOfSpeechTagger()
 

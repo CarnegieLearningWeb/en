@@ -53,17 +53,17 @@ def is_html_tag(str):
 from . import sgmllib
 class TagStripper(sgmllib.SGMLParser):
     
-	def __init__(self):
-		sgmllib.SGMLParser.__init__(self)
-		
-	def strip(self, html):
-		self.data = ""
-		self.feed(html)
-		self.close()
-		return self.data
-		
-	def handle_data(self, data):
-	    self.data += data + " "
+    def __init__(self):
+        sgmllib.SGMLParser.__init__(self)
+        
+    def strip(self, html):
+        self.data = ""
+        self.feed(html)
+        self.close()
+        return self.data
+        
+    def handle_data(self, data):
+        self.data += data + " "
 
 def strip_tags(str, clean=True):
     

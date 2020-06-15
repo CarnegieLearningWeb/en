@@ -3837,33 +3837,33 @@ if __name__ == '__main__':
 # Implementation for sorted() for Python versions prior to 2.4
 
 try:
-	reversed = reversed
+    reversed = reversed
 except NameError:
-	def reversed(x):
-		if hasattr(x, 'keys'):
-			raise ValueError('mappings do not support reverse iteration')
-		i = len(x)
-		while i > 0:
-			i -= 1
-			yield x[i]
+    def reversed(x):
+        if hasattr(x, 'keys'):
+            raise ValueError('mappings do not support reverse iteration')
+        i = len(x)
+        while i > 0:
+            i -= 1
+            yield x[i]
 
 try:
-	sorted = sorted
+    sorted = sorted
 except NameError:
-	def sorted(iterable, cmp=None, key=None, reverse=False):
-		"""Partial implementation of the "sorted" function from Python 2.4"""
-		if key is None:
-			lst = list(iterable)
-		else:
-			lst = [(key(val), idx, val) for idx, val in enumerate(iterable)]
-			lst.sort()
-			if key is None:
-				if reverse:
-					return lst[::-1]
-				return lst
-			if reverse:
-				lst = reversed(lst)
-			return [i[-1] for i in lst]
+    def sorted(iterable, cmp=None, key=None, reverse=False):
+        """Partial implementation of the "sorted" function from Python 2.4"""
+        if key is None:
+            lst = list(iterable)
+        else:
+            lst = [(key(val), idx, val) for idx, val in enumerate(iterable)]
+            lst.sort()
+            if key is None:
+                if reverse:
+                    return lst[::-1]
+                return lst
+            if reverse:
+                lst = reversed(lst)
+            return [i[-1] for i in lst]
 
 #######################################################################################################
 
@@ -3878,75 +3878,75 @@ secondary = [key.lower() for key in list(rid.category_tree.children["SECONDARY"]
 emotions  = [key.lower() for key in list(rid.category_tree.children["EMOTIONS"].children.keys())]
 
 class RIDScoreItem:
-	
-	def __init__(self, name, count, words, type):
-		
-		self.name  = name
-		self.count = count
-		self.words = words
-		self.type  = type
-		
-	def __str__(self):
-		
-		return self.name
+    
+    def __init__(self, name, count, words, type):
+        
+        self.name  = name
+        self.count = count
+        self.words = words
+        self.type  = type
+        
+    def __str__(self):
+        
+        return self.name
 
 class RIDScore(list):
-	
-	def __init__(self, rid, results):
-	
-		self.primary = 0
-		self.secondary = 0
-		self.emotions = 0
+    
+    def __init__(self, rid, results):
+    
+        self.primary = 0
+        self.secondary = 0
+        self.emotions = 0
 
-		self.count(rid, results)
-		self.populate(results)
+        self.count(rid, results)
+        self.populate(results)
 
-	def count(self, rid, results):
+    def count(self, rid, results):
 
-		# Keep a count per top category
-		# (primary, secondary, emotional)
-		score = {}
-		roots = rid.category_tree.children
-		for key in roots:
-			score[key] = 0
+        # Keep a count per top category
+        # (primary, secondary, emotional)
+        score = {}
+        roots = rid.category_tree.children
+        for key in roots:
+            score[key] = 0
 
-		# Calculate the total count.
-		# Increase the count for the top category each category belongs to.
-		total = 0
-		for category in results.category_count:
-			count = results.category_count[category]
-			total += count
-			for key in roots:
-				if category.isa(roots[key]):
-					score[key] += count
+        # Calculate the total count.
+        # Increase the count for the top category each category belongs to.
+        total = 0
+        for category in results.category_count:
+            count = results.category_count[category]
+            total += count
+            for key in roots:
+                if category.isa(roots[key]):
+                    score[key] += count
 
-		# Relativise the score for each top category.
-		if total > 0:
-			for key in score:
-				score[key] = float(score[key]) / total
+        # Relativise the score for each top category.
+        if total > 0:
+            for key in score:
+                score[key] = float(score[key]) / total
 
-		self.primary = score["PRIMARY"]
-		self.secondary = score["SECONDARY"]
-		self.emotions = score["EMOTIONS"]
+        self.primary = score["PRIMARY"]
+        self.secondary = score["SECONDARY"]
+        self.emotions = score["EMOTIONS"]
 
-	def populate(self, results):
-		
-		# A RIDScore is a sorted list of category items,
-		# with relevant words found in the text assigned to each category.
-		for (category, count) in sorted(list(results.category_count.items()), key=lambda x: x[1], reverse=True):
-			c = RIDScoreItem(
-				name=category.name.lower(),
-				count=count,
-				words=results.category_words[category],
-				type=category.parent.name.lower()
-			)
-			self.append(c)
-			
-	def __str__(self):
-		return str([str(item) for item in self])
+    def populate(self, results):
+        
+        # A RIDScore is a sorted list of category items,
+        # with relevant words found in the text assigned to each category.
+        for (category, count) in sorted(list(results.category_count.items()), key=lambda x: x[1], reverse=True):
+            c = RIDScoreItem(
+                name=category.name.lower(),
+                count=count,
+                words=results.category_words[category],
+                type=category.parent.name.lower()
+            )
+            self.append(c)
+            
+    def __str__(self):
+        return str([str(item) for item in self])
 
 def categorise(txt):
 
-	global rid
-	results = rid.analyze(txt)
-	return RIDScore(rid, results)
+    global rid
+    results = rid.analyze(txt)
+    return RIDScore(rid, results)

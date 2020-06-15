@@ -236,10 +236,10 @@ plural_categories = {
          "-i-classical" : ["afreet", "afrit", "efreet"],
         "-im-classical" : ["cherub", "goy", "seraph"],
 
-	            "o-os" : ["albino", "archipelago", "armadillo", "commando", "ditto", "dynamo", "embryo", "fiasco", "generalissimo", "ghetto", "guano", "inferno", "jumbo", "lingo", "lumbago", "magneto", "manifesto", "medico", "octavo", "photo", "pro", "quarto", "rhino", "stylo"],
+                "o-os" : ["albino", "archipelago", "armadillo", "commando", "ditto", "dynamo", "embryo", "fiasco", "generalissimo", "ghetto", "guano", "inferno", "jumbo", "lingo", "lumbago", "magneto", "manifesto", "medico", "octavo", "photo", "pro", "quarto", "rhino", "stylo"],
 
-	"general-generals" : ["Adjutant", "Brigadier", "Lieutenant", "Major", "Quartermaster", 
-	                      "adjutant", "brigadier", "lieutenant", "major", "quartermaster"],
+    "general-generals" : ["Adjutant", "Brigadier", "Lieutenant", "Major", "Quartermaster", 
+                          "adjutant", "brigadier", "lieutenant", "major", "quartermaster"],
 
 }
 
@@ -248,68 +248,68 @@ ADJECTIVE = "adjective"
 
 def plural(word, pos=NOUN, classical=True, custom={}):
 
-	""" Returns the plural of a given word.
-	
-	For example: child -> children.
-	Handles nouns and adjectives, using classical inflection by default
-	(e.g. where "matrix" pluralizes to "matrices" instead of "matrixes".
-	The custom dictionary is for user-defined replacements.
-	
-	"""
-	
-	if word in list(custom.keys()):
-		return custom[word]
+    """ Returns the plural of a given word.
+    
+    For example: child -> children.
+    Handles nouns and adjectives, using classical inflection by default
+    (e.g. where "matrix" pluralizes to "matrices" instead of "matrixes".
+    The custom dictionary is for user-defined replacements.
+    
+    """
+    
+    if word in list(custom.keys()):
+        return custom[word]
 
-	# Recursion of genitives
-	# remove the apostrophe and any trailing -s, 
-	# form the plural of the resultant noun, and then append an apostrophe.
-	# (dog's -> dogs')
-	if (len(word) > 0 and word[-1] == ",") or \
-	   (len(word) > 1 and word[-2:] == "'s"):
-		owner = word.rstrip("'s")
-		owners = plural(owner, classical, custom)
-		if owners[-1] == "s":
-			return owners + "'"
-		else:
-			return owners + "'s"
+    # Recursion of genitives
+    # remove the apostrophe and any trailing -s, 
+    # form the plural of the resultant noun, and then append an apostrophe.
+    # (dog's -> dogs')
+    if (len(word) > 0 and word[-1] == ",") or \
+       (len(word) > 1 and word[-2:] == "'s"):
+        owner = word.rstrip("'s")
+        owners = plural(owner, classical, custom)
+        if owners[-1] == "s":
+            return owners + "'"
+        else:
+            return owners + "'s"
             
-	# Recursion of compound words
-	# (Postmasters General, mothers-in-law, Roman deities).    
-	words = word.replace("-", " ").split(" ")
-	if len(words) > 1:
-		if words[1] == "general" or words[1] == "General" and \
-		   words[0] not in categories["general-generals"]:
-			return word.replace(words[0], plural(words[0], classical, custom))
-		elif words[1] in plural_prepositions:
-			return word.replace(words[0], plural(words[0], classical, custom))
-		else:
-			return word.replace(words[-1], plural(words[-1], classical, custom))
+    # Recursion of compound words
+    # (Postmasters General, mothers-in-law, Roman deities).    
+    words = word.replace("-", " ").split(" ")
+    if len(words) > 1:
+        if words[1] == "general" or words[1] == "General" and \
+           words[0] not in categories["general-generals"]:
+            return word.replace(words[0], plural(words[0], classical, custom))
+        elif words[1] in plural_prepositions:
+            return word.replace(words[0], plural(words[0], classical, custom))
+        else:
+            return word.replace(words[-1], plural(words[-1], classical, custom))
     
-	# Only a very few number of adjectives inflect.
-	n = list(range(len(plural_rules)))
-	if pos == ADJECTIVE:
-		n = [0, 1]
+    # Only a very few number of adjectives inflect.
+    n = list(range(len(plural_rules)))
+    if pos == ADJECTIVE:
+        n = [0, 1]
 
-	import re        
-	for i in n:
-		ruleset = plural_rules[i]	
-		for rule in ruleset:
-			suffix, inflection, category, classic = rule
+    import re        
+    for i in n:
+        ruleset = plural_rules[i]    
+        for rule in ruleset:
+            suffix, inflection, category, classic = rule
         
-			# A general rule,
-			# or a classic rule in classical mode.
-			if category == None:
-				if not classic or (classic and classical):
-					if re.search(suffix, word) is not None:
-						return re.sub(suffix, inflection, word)
+            # A general rule,
+            # or a classic rule in classical mode.
+            if category == None:
+                if not classic or (classic and classical):
+                    if re.search(suffix, word) is not None:
+                        return re.sub(suffix, inflection, word)
         
-			# A rule relating to a specific category of words   
-			if category != None:
-				if word in plural_categories[category] and (not classic or (classic and classical)):
-					if re.search(suffix, word) is not None:
-						return re.sub(suffix, inflection, word)
+            # A rule relating to a specific category of words   
+            if category != None:
+                if word in plural_categories[category] and (not classic or (classic and classical)):
+                    if re.search(suffix, word) is not None:
+                        return re.sub(suffix, inflection, word)
     
-	return word
+    return word
     
 #print plural("part-of-speech")
 #print plural("child")
@@ -323,7 +323,7 @@ def plural(word, pos=NOUN, classical=True, custom={}):
 #print plural("my", pos=ADJECTIVE)
 
 def noun_plural(word, classical=True, custom={}):
-	return plural(word, NOUN, classical, custom)
+    return plural(word, NOUN, classical, custom)
 
 def adjective_plural(word, classical=True, custom={}):
-	return plural(word, ADJECTIVE, classical, custom)
+    return plural(word, ADJECTIVE, classical, custom)
