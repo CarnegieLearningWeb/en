@@ -205,7 +205,7 @@ def demo():
     print('A PCFG grammar:', repr(grammar))
     print('    grammar.start()       =>', repr(grammar.start()))
     print('    grammar.productions() =>', end=' ')
-    # Use string.replace(...) is to line-wrap the output.
+    # Use str.replace(...) is to line-wrap the output.
     print(repr(grammar.productions()).replace(',', ',\n'+' '*26))
     print()
 

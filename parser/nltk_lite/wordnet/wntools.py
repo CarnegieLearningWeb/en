@@ -116,21 +116,21 @@ def meet(a, b, pointerType=HYPERNYM):
 #
 # String Utility Functions
 #
-def startsWith(str, prefix):
-    """Return true iff _str_ starts with _prefix_.
+def startsWith(strng, prefix):
+    """Return true iff _strng_ starts with _prefix_.
     
     >>> startsWith('unclear', 'un')
     1
     """
-    return str[:len(prefix)] == prefix
+    return strng[:len(prefix)] == prefix
 
-def endsWith(str, suffix):
-    """Return true iff _str_ ends with _suffix_.
+def endsWith(strng, suffix):
+    """Return true iff _strng_ ends with _suffix_.
     
     >>> endsWith('clearly', 'ly')
     1
     """
-    return str[-len(suffix):] == suffix
+    return strng[-len(suffix):] == suffix
 
 def equalsIgnoreCase(a, b):
     """Return true iff a and b have the same lowercase representation.
@@ -247,7 +247,7 @@ def getIndex(form, pos='noun'):
             return dictionary[form]
         elif substitutions:
             (old, new) = substitutions[0]
-            substitute = string.replace(form, old, new) and substitute != form
+            substitute = str.replace(form, old, new) and substitute != form
             if substitute and substitute in dictionary:
                 return dictionary[substitute]
             return              trySubstitutions(trySubstitutions, form, substitutions[1:], lookup=0) or \

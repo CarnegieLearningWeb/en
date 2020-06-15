@@ -218,7 +218,7 @@ class Word:
         """Initialize the word from a line of a WN POS file."""
         tokens = string.split(line)
         ints = list(map(int, tokens[int(tokens[3]) + 4:]))
-        self.form = string.replace(tokens[0], '_', ' ')
+        self.form = str.replace(tokens[0], '_', ' ')
         "Orthographic representation of the word."
         self.pos = _normalizePOS(tokens[1])
         "Part of speech.  One of NOUN, VERB, ADJECTIVE, ADVERB."
@@ -568,7 +568,7 @@ class Sense:
                 sense.position = IMMEDIATE_POSTNOMINAL
             else:
                 raise "unknown attribute " + key
-        sense.form = string.replace(form, '_', ' ')
+        sense.form = str.replace(form, '_', ' ')
         "orthographic representation of the Word this is a Sense of."
     
     def __getattr__(self, name):
@@ -815,7 +815,7 @@ class Dictionary:
         return "<%s.%s instance for %s>" % (self.__module__, "Dictionary", self.pos)
     
     def getWord(self, form, line=None):
-        key = string.replace(str.lower(form), ' ', '_')
+        key = str.replace(str.lower(form), ' ', '_')
         pos = self.pos
         def loader(key=key, line=line, indexFile=self.indexFile):
             line = line or indexFile.get(key)
@@ -882,7 +882,7 @@ class Dictionary:
             return self.getWord(index)
         elif isinstance(index, IntType):
             line = self.indexFile[index]
-            return self.getWord(string.replace(line[:string.find(line, ' ')], '_', ' '), line)
+            return self.getWord(str.replace(line[:string.find(line, ' ')], '_', ' '), line)
         else:
             raise TypeError("%s is not a String or Int" % repr(index))
     
@@ -932,7 +932,7 @@ class Dictionary:
             line = file.readline()
             if line == '': break
             if line[0] != ' ':
-                key = string.replace(line[:string.find(line, ' ')], '_', ' ')
+                key = str.replace(line[:string.find(line, ' ')], '_', ' ')
                 if (counter % 1000) == 0:
                     print("%s..." % (key,), end=' ')
                     import sys
