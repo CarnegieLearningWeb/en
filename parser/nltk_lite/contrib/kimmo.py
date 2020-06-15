@@ -730,8 +730,8 @@ class KimmoGUI:
     		if not ld.result: return
     		
     		# now create the dotstring & image from the (single) selection
-    		dotstring = dotformat(self.kimmoinstance.fsasNodes[string.atoi(ld.result[0])]['nodes'])
-    		graphtitle = 'FSA ' + self.kimmoinstance.fsasNodes[string.atoi(ld.result[0])]['name']
+    		dotstring = dotformat(self.kimmoinstance.fsasNodes[int(ld.result[0])]['nodes'])
+    		graphtitle = 'FSA ' + self.kimmoinstance.fsasNodes[int(ld.result[0])]['name']
     		
     		# make file read:
     		# something.rul.1.gif  (where 1 is the rule index number)
@@ -898,7 +898,7 @@ class KimmoGUI:
     		if not matchIdx: break
     		
     		matchIdxFields = matchIdx.split(".")
-    		matchLenStr = matchIdxFields[0] + "." + str(string.atoi(matchIdxFields[1],10) + matchLen.get())
+    		matchLenStr = matchIdxFields[0] + "." + str(int(matchIdxFields[1],10) + matchLen.get())
 
     		print((matchIdx, matchLenStr))
     		help.tag_add(tagId, matchIdx, matchLenStr )
@@ -1642,8 +1642,8 @@ class KimmoControl:
             		
             		if rulegroup: self.guiError('error, fsa rule not finished')
             		
-            		rulecolcnt = string.atoi(items[len(items)-1])
-            		rulerowcnt = string.atoi(items[len(items)-2])
+            		rulecolcnt = int(items[len(items)-1])
+            		rulerowcnt = int(items[len(items)-2])
             		rulegroup = string.join(items[1:len(items)-2])
             		
             		# create the structure (for graphing) for storing the transitions
@@ -1686,7 +1686,7 @@ class KimmoControl:
             			items[0] = items[0][0:len(items[0])-1]	# remove the ':'
             			
             			# convert to integers (instead of strings)
-            			for x in range(rulecolcnt + 1): items[x] = string.atoi(items[x]) # including the first row number - i.e. '4:'
+            			for x in range(rulecolcnt + 1): items[x] = int(items[x]) # including the first row number - i.e. '4:'
             			
             			# add this row.
             			kimmoRule.append((items[0], finalstate, items[1:len(items)]))

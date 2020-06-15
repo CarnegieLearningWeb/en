@@ -78,7 +78,7 @@ class Chat(object):
     def _wildcards(self, response, match):
         pos = string.find(response,'%')
         while pos >= 0:
-            num = string.atoi(response[pos+1:pos+2])
+            num = int(response[pos+1:pos+2])
             response = response[:pos] + \
                 self._substitute(match.group(num)) + \
                 response[pos+2:]

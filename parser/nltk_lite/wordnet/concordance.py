@@ -110,7 +110,7 @@ def sentences(word, root):
     if line[:keylen] != key:
       break
     type, sense, sentence = tagsentence(line, root + "tagfiles/")
-    print ss_type[string.atoi(type) - 1], sense
+    print ss_type[int(type) - 1], sense
     for sent in sentence:
       print sent
 
