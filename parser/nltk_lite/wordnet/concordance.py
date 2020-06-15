@@ -17,11 +17,11 @@ ss_type = ("NOUN", "VERB", "ADJECTIVE", "ADVERB", "ADJECTIVE SATELLITE")
 # given a sentence number (and the contents of a semantic concordance file)
 # return a string of words as the sentence
 def find_sentence(snum, msg):
-  str = "<s snum=%s>" % snum
-  s = string.find(msg, str)
+  strng = "<s snum=%s>" % snum
+  s = string.find(msg, strng)
   if s < 0:
     return "<Unknown>"
-  s = s + len(str)
+  s = s + len(strng)
   sentence = ""
   tag = ""
   while 1:
