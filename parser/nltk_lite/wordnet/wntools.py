@@ -313,7 +313,7 @@ def morphy(form, pos='noun', collect=0):
         import string
         exceptions = binarySearchFile(excfile, form)
         if exceptions:
-            form = exceptions[string.find(exceptions, ' ')+1:-1]
+            form = exceptions[str.find(exceptions, ' ')+1:-1]
         if lookup and form in dictionary:
             if collect:
                 collection.append(form)

@@ -18,7 +18,7 @@ ss_type = ("NOUN", "VERB", "ADJECTIVE", "ADVERB", "ADJECTIVE SATELLITE")
 # return a string of words as the sentence
 def find_sentence(snum, msg):
   strng = "<s snum=%s>" % snum
-  s = string.find(msg, strng)
+  s = str.find(msg, strng)
   if s < 0:
     return "<Unknown>"
   s = s + len(strng)
@@ -27,14 +27,14 @@ def find_sentence(snum, msg):
   while 1:
     if msg[s] == '\n':
       s = s + 1
-    n = string.find(msg, '<', s)
+    n = str.find(msg, '<', s)
     if n < 0:
       break
     if n - s != 0:
       if tag == "w" and msg[s] != "'" and len(sentence) > 0: # word form
         sentence = sentence + " "
       sentence = sentence + msg[s:n]
-    e = string.find(msg, '>', n)
+    e = str.find(msg, '>', n)
     if e < 0:
       break
     tag = msg[n+1]
@@ -51,24 +51,24 @@ def find_sentence(snum, msg):
 #  sense (numeric character string)
 #  list of sentences (constructed from the taglist)
 def tagsentence(tag, root):
-  s = string.find(tag, '%')
+  s = str.find(tag, '%')
   sentence = []
   type = tag[s+1]
   c = s
   for i in range(0,4):
-    c = string.find(tag, ':', c + 1)
-  c = string.find(tag, ' ', c + 1)
+    c = str.find(tag, ':', c + 1)
+  c = str.find(tag, ' ', c + 1)
   sense = tag[c+1]
   c = c + 3
   while 1:
-    d = string.find(tag, ' ', c) # file separator
+    d = str.find(tag, ' ', c) # file separator
     if d < 0:
       loclist = tag[c:]
     else:
       loclist = tag[c:d]
       c = d + 1
 
-    e = string.find(loclist, ':')
+    e = str.find(loclist, ':')
     filename = loclist[:e]
     fh = open(root + filename, "rb")
     msg = fh.read()
@@ -76,14 +76,14 @@ def tagsentence(tag, root):
 
     while 1:
       e = e + 1
-      f = string.find(loclist, ';', e)
+      f = str.find(loclist, ';', e)
       if f < 0:
         sent_word = loclist[e:]
       else:
         sent_word = loclist[e:f]
         e = f
 
-      g = string.find(sent_word, ',')
+      g = str.find(sent_word, ',')
       sent = sent_word[:g]
 
       sentence.append(find_sentence(sent, msg))

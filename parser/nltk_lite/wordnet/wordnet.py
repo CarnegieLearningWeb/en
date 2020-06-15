@@ -882,7 +882,7 @@ class Dictionary:
             return self.getWord(index)
         elif isinstance(index, IntType):
             line = self.indexFile[index]
-            return self.getWord(str.replace(line[:string.find(line, ' ')], '_', ' '), line)
+            return self.getWord(str.replace(line[:str.find(line, ' ')], '_', ' '), line)
         else:
             raise TypeError("%s is not a String or Int" % repr(index))
     
@@ -932,7 +932,7 @@ class Dictionary:
             line = file.readline()
             if line == '': break
             if line[0] != ' ':
-                key = str.replace(line[:string.find(line, ' ')], '_', ' ')
+                key = str.replace(line[:str.find(line, ' ')], '_', ' ')
                 if (counter % 1000) == 0:
                     print("%s..." % (key,), end=' ')
                     import sys
@@ -1060,7 +1060,7 @@ class _IndexFile:
             while 1:
                 offset, line = self.file.tell(), self.file.readline()
                 if not line: break
-                key = line[:string.find(line, ' ')]
+                key = line[:str.find(line, ' ')]
                 if (count % 1000) == 0:
                     print("%s..." % (key,), end=' ')
                     import sys

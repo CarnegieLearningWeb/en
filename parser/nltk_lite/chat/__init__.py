@@ -76,13 +76,13 @@ class Chat(object):
         return words
 
     def _wildcards(self, response, match):
-        pos = string.find(response,'%')
+        pos = str.find(response,'%')
         while pos >= 0:
             num = int(response[pos+1:pos+2])
             response = response[:pos] + \
                 self._substitute(match.group(num)) + \
                 response[pos+2:]
-            pos = string.find(response,'%')
+            pos = str.find(response,'%')
         return response
 
     def respond(self, str):
