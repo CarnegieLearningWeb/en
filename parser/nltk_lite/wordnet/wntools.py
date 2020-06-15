@@ -302,9 +302,9 @@ def morphy(form, pos='noun', collect=0):
     fname = os.path.join(WNSEARCHDIR, {NOUN: 'noun', VERB: 'verb', ADJECTIVE: 'adj', ADVERB: 'adv'}[pos] + '.exc')
     excfile = open(fname)
     substitutions = MORPHOLOGICAL_SUBSTITUTIONS[pos]
-    def trySubstitutions(trySubstitutions,	# workaround for lack of nested closures in Python < 2.1
-                         form,		  	# reduced form
-                         substitutions,		# remaining substitutions
+    def trySubstitutions(trySubstitutions,    # workaround for lack of nested closures in Python < 2.1
+                         form,                # reduced form
+                         substitutions,       # remaining substitutions
                          lookup=1,
                          dictionary=_dictionaryFor(pos),
                          excfile=excfile,
