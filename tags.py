@@ -50,7 +50,7 @@ def is_html_tag(str):
 #print is_html_tag("<a href>")
 #print is_html_tag("<xml>")
 
-import sgmllib
+from . import sgmllib
 class TagStripper(sgmllib.SGMLParser):
     
 	def __init__(self):
