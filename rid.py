@@ -49,8 +49,8 @@ class RegressiveImageryDictionary:
     finally:
       rid_in.close()
 
-  def load_dictionary_from_string(self, string):
-    rid_in = io.StringIO(string)
+  def load_dictionary_from_string(self, strng):
+    rid_in = io.StringIO(strng)
     self.load_dictionary(rid_in)
       
   def load_dictionary(self, stream):
@@ -84,8 +84,8 @@ class RegressiveImageryDictionary:
     finally:
       exc_in.close()
       
-  def load_exclusion_list_from_string(self, string):
-    exc_in = io.StringIO(string)
+  def load_exclusion_list_from_string(self, strng):
+    exc_in = io.StringIO(strng)
     self.load_exclusion_list(exc_in)
 
   def load_exclusion_list(self, stream):
@@ -312,14 +312,14 @@ class RIDResults:
 
 
 WORD_REGEX = re.compile(r'[^a-zA-Z]+')
-def tokenize(string):
-  tokens = WORD_REGEX.split(string.lower())
+def tokenize(strng):
+  tokens = WORD_REGEX.split(strng.lower())
   tokens = [token for token in tokens if len(token) > 0]
   return tokens
 
 
-def count_leading_tabs(string):
-  for i, char in enumerate(string):
+def count_leading_tabs(strng):
+  for i, char in enumerate(strng):
     if char != '\t':
       return i
 
