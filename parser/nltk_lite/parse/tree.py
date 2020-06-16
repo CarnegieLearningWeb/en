@@ -101,9 +101,10 @@ class Tree(list):
     #////////////////////////////////////////////////////////////
 
     def __getitem__(self, index):
-        if isinstance(index, int):
+        if isinstance(index, int) or isinstance(index, slice):
             return list.__getitem__(self, index)
         else:
+            # Not sure if this stuff is needed anymore. It may have just implemented __getslice__
             if len(index) == 0:
                 return self
             elif len(index) == 1:
@@ -112,9 +113,10 @@ class Tree(list):
                 return self[int(index[0])][index[1:]]
     
     def __setitem__(self, index, value):
-        if isinstance(index, int):
+        if isinstance(index, int) or isinstance(index, slice):
             return list.__setitem__(self, index, value)
         else:
+            # Not sure if this stuff is needed anymore. It may have just implemented __setslice__
             if len(index) == 0:
                 raise IndexError('The tree position () may not be '
                                  'assigned to.')
@@ -124,9 +126,10 @@ class Tree(list):
                 self[index[0]][index[1:]] = value
     
     def __delitem__(self, index):
-        if isinstance(index, int):
+        if isinstance(index, int) or isinstance(index, slice):
             return list.__delitem__(self, index)
         else:
+            # Not sure if this stuff is needed anymore. It may have just implemented __delslice__
             if len(index) == 0:
                 raise IndexError('The tree position () may not be deleted.')
             elif len(index) == 1:
@@ -351,11 +354,7 @@ class Tree(list):
 class ImmutableTree(Tree):
     def __setitem__(self):
         raise ValueError('ImmutableTrees may not be modified')
-    def __setslice__(self):
-        raise ValueError('ImmutableTrees may not be modified')
     def __delitem__(self):
-        raise ValueError('ImmutableTrees may not be modified')
-    def __delslice__(self):
         raise ValueError('ImmutableTrees may not be modified')
     def __iadd__(self):
         raise ValueError('ImmutableTrees may not be modified')

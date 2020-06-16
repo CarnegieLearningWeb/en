@@ -215,6 +215,7 @@ class _ElementInterface:
 
     ##
     # Returns the given subelement.
+    # This reimplements __getslice__
     #
     # @param index What subelement to return.
     # @return The given subelement.
@@ -225,6 +226,7 @@ class _ElementInterface:
 
     ##
     # Replaces the given subelement.
+    # This reimplements __setslice__
     #
     # @param index What subelement to replace.
     # @param element The new element value.
@@ -232,49 +234,23 @@ class _ElementInterface:
     # @exception AssertionError If element is not a valid object.
 
     def __setitem__(self, index, element):
-        assert iselement(element)
-        self._children[index] = element
+        if isinstance(index, slice):
+            for elem in element:
+                assert iselement(elem)
+            self._children[index] = list(elem)
+        else:
+            assert iselement(element)
+            self._children[index] = element
 
     ##
     # Deletes the given subelement.
+    # This reimplements __delslice__
     #
     # @param index What subelement to delete.
     # @exception IndexError If the given element does not exist.
 
     def __delitem__(self, index):
         del self._children[index]
-
-    ##
-    # Returns a list containing subelements in the given range.
-    #
-    # @param start The first subelement to return.
-    # @param stop The first subelement that shouldn't be returned.
-    # @return A sequence object containing subelements.
-
-    def __getslice__(self, start, stop):
-        return self._children[start:stop]
-
-    ##
-    # Replaces a number of subelements with elements from a sequence.
-    #
-    # @param start The first subelement to replace.
-    # @param stop The first subelement that shouldn't be replaced.
-    # @param elements A sequence object with zero or more elements.
-    # @exception AssertionError If a sequence member is not a valid object.
-
-    def __setslice__(self, start, stop, elements):
-        for element in elements:
-            assert iselement(element)
-        self._children[start:stop] = list(elements)
-
-    ##
-    # Deletes a number of subelements.
-    #
-    # @param start The first subelement to delete.
-    # @param stop The first subelement to leave in there.
-
-    def __delslice__(self, start, stop):
-        del self._children[start:stop]
 
     ##
     # Adds a subelement to the end of this element.

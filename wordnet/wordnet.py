@@ -312,10 +312,8 @@ class Word:
         return len(self.getSenses())
     
     def __getitem__(self, index):
+        # This reimplements __getslice__
         return self.getSenses()[index]
-    
-    def __getslice__(self, i, j):
-        return self.getSenses()[i:j]
 
 
 class Synset:
@@ -495,6 +493,9 @@ class Synset:
         'cat' in {noun: big cat, cat}
         """
         senses = self.getSenses()
+        if isinstance(idx, slice):
+            # This reimplements __getslice__
+            return senses[idx]
         if isinstance(idx, Word):
             idx = idx.form
         if isinstance(idx, str):
@@ -502,9 +503,6 @@ class Synset:
                   _index(idx, [sense.form for sense in senses], _equalsIgnoreCase)
         return senses[idx]
     
-    def __getslice__(self, i, j):
-        return self.getSenses()[i:j]
-
 
 class Sense:
     """A specific meaning of a specific word -- the intersection of a Word and a Synset.
@@ -849,18 +847,18 @@ class Dictionary:
             self.length = len(self.indexFile)
         return self.length
     
-    def __getslice__(self, a, b):
-        results = []
-        if type(a) == type('') and type(b) == type(''):
-            raise "unimplemented"
-        elif type(a) == type(1) and type(b) == type(1):
-            for i in range(a, b):
-                results.append(self[i])
-        else:
-            raise TypeError
-        return results
-
     def __getitem__(self, index):
+        # This used to be part of __getslice__
+        if isinstance(index, slice):
+            results = []
+            if isinstance(slice.start, str) and isinstance(slice.stop, str):
+                raise "slice by str unimplemented"
+            elif isinstance(slice.start, int) and isinstance(slice.stop, int):
+                for i in range(slice.start, slice.stop):
+                    results.append(self[i])
+                return results
+            else:
+                raise TypeError
         """If index is a String, return the Word whose form is
         index.  If index is an integer n, return the Word
         indexed by the n'th Word in the Index file.
