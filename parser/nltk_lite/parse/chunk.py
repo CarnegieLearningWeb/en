@@ -550,7 +550,7 @@ class ChunkString(object):
         # have to do this in pieces, to avoid a maximum recursion
         # depth limit for regular expressions.
         brackets = ChunkString._BRACKETS.sub('', self._str)
-        for i in range(1+len(brackets)/5000):
+        for i in range(1+len(brackets)//5000):
             substr = brackets[i*5000:i*5000+5000]
             if not ChunkString._BALANCED_BRACKETS.match(substr):
                 raise ValueError('Transformation generated invalid chunkstring: %s' % substr)
@@ -1273,7 +1273,7 @@ class RegexpChunk(ChunkParseI, AbstractParse):
         @param verbose: Whether output should be verbose.
         @rtype: C{None}
         """
-        indent = ' '*(35-len(str(chunkstr))/2)
+        indent = ' '*(35-len(str(chunkstr))//2)
         
         print('Input:')
         print(indent, chunkstr)
