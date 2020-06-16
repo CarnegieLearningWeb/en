@@ -216,7 +216,7 @@ class Word:
     
     def __init__(self, line):
         """Initialize the word from a line of a WN POS file."""
-        tokens = string.split(line)
+        tokens = str.split(line)
         ints = list(map(int, tokens[int(tokens[3]) + 4:]))
         self.form = str.replace(tokens[0], '_', ' ')
         "Orthographic representation of the word."
@@ -365,7 +365,7 @@ class Synset:
         self.offset = offset
         """integer offset into the part-of-speech file.  Together
         with pos, this can be used as a unique id."""
-        tokens = string.split(line[:str.index(line, '|')])
+        tokens = str.split(line[:str.index(line, '|')])
         self.ssType = tokens[2]
         self.gloss = str.strip(line[str.index(line, '|') + 1:])
         self.lexname = Lexname.lexnames[int(tokens[1])]
@@ -770,7 +770,7 @@ class Lexname:
 
 def setupLexnames():
     for l in open(WNSEARCHDIR+'/lexnames').readlines():
-        i,name,category = string.split(l)
+        i,name,category = str.split(l)
         Lexname(name,PartsOfSpeech[int(category)-1])
 
 setupLexnames()
@@ -1378,7 +1378,7 @@ def _initializePOSTables():
             (VERB, "verb v v."),
             (ADJECTIVE, "adjective adj adj. a s"),
             (ADVERB, "adverb adv adv. r")):
-        tokens = string.split(abbreviations)
+        tokens = str.split(abbreviations)
         for token in tokens:
             _POSNormalizationTable[token] = pos
             _POSNormalizationTable[string.upper(token)] = pos
