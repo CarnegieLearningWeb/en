@@ -58,18 +58,18 @@ class Chat(object):
         self._reflections = reflections
 
     # bug: only permits single word expressions to be mapped
-    def _substitute(self, str):
+    def _substitute(self, strng):
         """
         Substitute words in the string, according to the specified reflections,
         e.g. "I'm" -> "you are"
         
-        @type str: C{string}
-        @param str: The string to be mapped
+        @type strng: C{string}
+        @param strng: The string to be mapped
         @rtype: C{string}
         """
 
         words = ""
-        for word in string.split(str.lower(str)):
+        for word in string.split(str.lower(strng)):
             if word in self._reflections:
                 word = self._reflections[word]
             words += ' ' + word
