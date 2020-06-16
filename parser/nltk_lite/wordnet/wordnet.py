@@ -312,7 +312,7 @@ class Word:
     # Sequence protocol (a Word's elements are its Senses)
     #
     def __bool__(self):
-        return 1
+        return True
     
     def __len__(self):
         return len(self.getSenses())
@@ -480,7 +480,7 @@ class Synset:
     # Sequence protocol (a Synset's elements are its senses).
     #
     def __bool__(self):
-        return 1
+        return True
     
     def __len__(self):
         """
@@ -844,7 +844,7 @@ class Dictionary:
         >>> N and 'true'
         'true'
         """
-        return 1
+        return True
     
     def __len__(self):
         """Return the number of index entries.
@@ -972,7 +972,7 @@ class _IndexFile:
     # Sequence protocol (an _IndexFile's items are its lines)
     #
     def __bool__(self):
-        return 1
+        return True
     
     def __len__(self):
         if hasattr(self, 'indexCache'):
@@ -987,7 +987,7 @@ class _IndexFile:
         return lines
     
     def __bool__(self):
-        return 1
+        return True
     
     def __getitem__(self, index):
         if isinstance(index, str):
