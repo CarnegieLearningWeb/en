@@ -1377,7 +1377,7 @@ def _initializePOSTables():
         tokens = str.split(abbreviations)
         for token in tokens:
             _POSNormalizationTable[token] = pos
-            _POSNormalizationTable[string.upper(token)] = pos
+            _POSNormalizationTable[str.upper(token)] = pos
     for dict in Dictionaries:
         _POSNormalizationTable[dict] = dict.pos
         _POStoDictionaryTable[dict.pos] = dict
