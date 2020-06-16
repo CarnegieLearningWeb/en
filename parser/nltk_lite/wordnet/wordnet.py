@@ -461,7 +461,7 @@ class Synset:
         >>> str(N['dog'][0].synset)
         '{noun: dog, domestic dog, Canis familiaris}'
         """
-        return "{" + self.pos + ": " + string.joinfields([sense.form for sense in self.getSenses()], ", ") + "}"
+        return "{" + self.pos + ": " + " ".join([sense.form for sense in self.getSenses()], ", ") + "}"
     
     def __repr__(self):
         """If ReadableRepresentations is true, return a human-readable
