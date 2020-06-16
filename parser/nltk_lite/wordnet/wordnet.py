@@ -42,7 +42,6 @@ __version__ = "2.0.1"
 import string
 import os
 from os import environ
-from types import IntType, ListType, StringType, TupleType
 
 
 #
@@ -504,7 +503,7 @@ class Synset:
         senses = self.getSenses()
         if isinstance(idx, Word):
             idx = idx.form
-        if isinstance(idx, StringType):
+        if isinstance(idx, str):
             idx = _index(idx, [sense.form for sense in senses]) or \
                   _index(idx, [sense.form for sense in senses], _equalsIgnoreCase)
         return senses[idx]
@@ -878,9 +877,9 @@ class Dictionary:
         >>> N[0]
         'hood(n.)
         """
-        if isinstance(index, StringType):
+        if isinstance(index, str):
             return self.getWord(index)
-        elif isinstance(index, IntType):
+        elif isinstance(index, int):
             line = self.indexFile[index]
             return self.getWord(str.replace(line[:str.find(line, ' ')], '_', ' '), line)
         else:
@@ -991,11 +990,11 @@ class _IndexFile:
         return 1
     
     def __getitem__(self, index):
-        if isinstance(index, StringType):
+        if isinstance(index, str):
             if hasattr(self, 'indexCache'):
                 return self.indexCache[index]
             return binarySearchFile(self.file, index, self.offsetLineCache, 8)
-        elif isinstance(index, IntType):
+        elif isinstance(index, int):
             if hasattr(self, 'indexCache'):
                 return self.get(self.keys[index])
             if index < self.nextIndex:
