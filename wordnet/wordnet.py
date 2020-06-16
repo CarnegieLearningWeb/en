@@ -359,9 +359,9 @@ class Synset:
         self.offset = offset
         """integer offset into the part-of-speech file.  Together
         with pos, this can be used as a unique id."""
-        tokens = string.split(line[:string.index(line, '|')])
+        tokens = string.split(line[:str.index(line, '|')])
         self.ssType = tokens[2]
-        self.gloss = string.strip(line[string.index(line, '|') + 1:])
+        self.gloss = string.strip(line[str.index(line, '|') + 1:])
         self.lexname = Lexname.lexnames[int(tokens[1])]
         (self._senseTuples, remainder) = _partition(tokens[4:], 2, int(tokens[3], 16))
         (self._pointerTuples, remainder) = _partition(remainder[1:], 4, int(remainder[0]))
@@ -551,7 +551,7 @@ class Sense:
         (form, idString) = senseTuple
         sense.position = None
         if '(' in form:
-            index = string.index(form, '(')
+            index = str.index(form, '(')
             key = form[index + 1:-1]
             form = form[:index]
             if key == 'a':
