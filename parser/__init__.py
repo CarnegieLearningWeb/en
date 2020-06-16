@@ -40,7 +40,7 @@ class PartOfSpeechTagger:
         if(len(self.lexHash) == 0):
             import os
             path = os.path.join(os.path.dirname(__file__), "Brill_lexicon")
-            upkl = open(path, 'r')
+            upkl = open(path, 'rb')
             self.lexHash = pickle.load(upkl)
             upkl.close()
 
