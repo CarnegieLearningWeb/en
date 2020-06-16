@@ -64,7 +64,6 @@ the L{FeatureBindings} class.
 # like to see some compelling use cases before we add it.
 
 import re
-from types import NoneType
 
 #//////////////////////////////////////////////////////////////////////
 # Variables and variable bindings
