@@ -193,7 +193,7 @@ class FreqDist(object):
                should be returned.
         @type sample: any
         """
-        if self._N is 0: return 0
+        if self._N == 0: return 0
         return float(self._count.get(sample, 0)) / self._N
 
     def max(self):
