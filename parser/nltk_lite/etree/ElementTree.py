@@ -1207,7 +1207,7 @@ class XMLTreeBuilder:
             if prefix == ">":
                 self._doctype = None
                 return
-            text = string.strip(text)
+            text = str.strip(text)
             if not text:
                 return
             self._doctype.append(text)

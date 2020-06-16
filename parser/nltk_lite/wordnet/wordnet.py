@@ -367,7 +367,7 @@ class Synset:
         with pos, this can be used as a unique id."""
         tokens = string.split(line[:str.index(line, '|')])
         self.ssType = tokens[2]
-        self.gloss = string.strip(line[str.index(line, '|') + 1:])
+        self.gloss = str.strip(line[str.index(line, '|') + 1:])
         self.lexname = Lexname.lexnames[int(tokens[1])]
         (self._senseTuples, remainder) = _partition(tokens[4:], 2, int(tokens[3], 16))
         (self._pointerTuples, remainder) = _partition(remainder[1:], 4, int(remainder[0]))
