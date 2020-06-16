@@ -196,7 +196,7 @@ class MinimalSet(object):
 ######################################################################
 
 import re
-def re_show(regexp, string):
+def re_show(regexp, strng):
     """
     Search C{string} for substrings matching C{regexp} and wrap
     the matches with braces.  This is convenient for learning about
@@ -207,7 +207,7 @@ def re_show(regexp, string):
     @rtype: C{string}
     @return: A string with braces surrounding the matched substrings.
     """
-    print(re.compile(regexp, re.M).sub("{\g<0>}", string.rstrip()))
+    print(re.compile(regexp, re.M).sub("{\g<0>}", strng.rstrip()))
 
 
 ##########################################################################
