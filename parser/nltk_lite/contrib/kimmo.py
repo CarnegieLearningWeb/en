@@ -826,11 +826,11 @@ class KimmoGUI:
 # CAPTURE PYTHON-KIMMO OUTPUT
 # redirect to debug window, if operational
     def capturePrint(self,*args):
-    	# self.debugWin.set(string.join(args," "))
+    	# self.debugWin.set(str.join(args," "))
     	
     	# if there is a trace/debug window
     	if self.dbgTracing:
-    		self.traceWindow.insert(tkinter.END, string.join(args," "))
+    		self.traceWindow.insert(tkinter.END, str.join(args," "))
     		self.traceWindow.see(tkinter.END)
     		
     	
@@ -1228,13 +1228,13 @@ class KimmoControl:
     	# load lexicon file
     	if lexicon_file:
 		f = read_kimmo_file(lexicon_file)
-	        lexicon_string = string.join(f.readlines(),"")
+	        lexicon_string = str.join(f.readlines(),"")
 	        f.close()
 
     	# load rule file
     	if rule_file:
 		f = read_kimmo_file(rule_file)
-	        rule_string = string.join(f.readlines(),"")
+	        rule_string = str.join(f.readlines(),"")
 	        f.close()    	
     	
     	try:
@@ -1393,7 +1393,7 @@ class KimmoControl:
             		if (moreitems[x][0] == '"') and (rangestart < 0): rangestart = x
             		elif (moreitems[x][len(moreitems[x])-1] == '"') and (rangestart > -1):
             			rangeend = x
-            			moreitems[rangestart] = string.join(moreitems[rangestart:rangeend+1], " ")
+            			moreitems[rangestart] = str.join(moreitems[rangestart:rangeend+1], " ")
 
             	i = 0
             	for furtheritem in moreitems:
@@ -1609,12 +1609,12 @@ class KimmoControl:
             	if items[0] == 'SUBSET':
             		if items[1] == 'ALL': items[1] = '@'
             		self.ksubsets.append(
-            			KimmoSubset(items[1], string.join(items[2:len(items)]," ") ))
-            		# print items[1] + ' ' + string.join(items[2:len(items)]," ")
+            			KimmoSubset(items[1], str.join(items[2:len(items)]," ") ))
+            		# print items[1] + ' ' + str.join(items[2:len(items)]," ")
             		
             	# load up the fsa regexp based on alphabet	
             	# also set up the @ subset if alphabet is defined (old rule file style)
-            	elif items[0] == 'ALPHABET': anyset[1] = string.join(items[1:len(items)]," ")
+            	elif items[0] == 'ALPHABET': anyset[1] = str.join(items[1:len(items)]," ")
             	
             	elif items[0] == 'ANY': anyset[0] = items[1]
             	
@@ -1626,14 +1626,14 @@ class KimmoControl:
             		self.boundary_char = items[1]
             	
             	elif items[0] == 'DEFAULT':
-            		self.kdefaults = [ KimmoDefaults(string.join(items[1:len(items)]," ")) ]
+            		self.kdefaults = [ KimmoDefaults(str.join(items[1:len(items)]," ")) ]
             		
             	elif items[0] == 'ARROWRULE':
             		# ARROWRULE 03:epenthesis1 0:e ==> [Csib (c h) (s h) y:i] +:0 _ s [+:0 #]
             		# KimmoArrowRule('03:epenthesis1',  '0:e ==> [Csib (c h) (s h) y:i] +:0 _ s [+:0 #]'),
-            		# print items[1] + ' ' + string.join(items[2:len(items)]," ")
+            		# print items[1] + ' ' + str.join(items[2:len(items)]," ")
             		self.krules.append(
-            			KimmoArrowRule(items[1],  string.join(items[2:len(items)]," "))
+            			KimmoArrowRule(items[1],  str.join(items[2:len(items)]," "))
             			# KimmoArrowRule('05:y:i-spelling', 'y:i <=> @:C +:0? _ +:0 ~I')
             			)
 
@@ -1644,7 +1644,7 @@ class KimmoControl:
             		
             		rulecolcnt = int(items[len(items)-1])
             		rulerowcnt = int(items[len(items)-2])
-            		rulegroup = string.join(items[1:len(items)-2])
+            		rulegroup = str.join(items[1:len(items)-2])
             		
             		# create the structure (for graphing) for storing the transitions
             		# of the fsas
@@ -1675,7 +1675,7 @@ class KimmoControl:
             			# i.e. not text
             		if ((':' in items[0]) or ('.' in items[0])) and (not ct.match(items[0])):
             			# make sure to check for TRUE vs FALSE rows...
-            			# sprint items[0][0:len(items[0])-1] + ' -- ' + string.join(items[1:len(items)], " ")
+            			# sprint items[0][0:len(items[0])-1] + ' -- ' + str.join(items[1:len(items)], " ")
             			
             			if (items[0][len(items[0])-1] == ':') : finalstate = True
             			elif (items[0][len(items[0])-1] == '.') : finalstate = False
@@ -1744,7 +1744,7 @@ class KimmoControl:
             			# if number is equal to row count, then add total and reset rule group
             			if ( items[0] == rulerowcnt):
             				self.krules.append(
-            					KimmoFSARule(str(rulerowcnt)+':'+rulegroup, string.join(ruleTran," "), kimmoRule))
+            					KimmoFSARule(str(rulerowcnt)+':'+rulegroup, str.join(ruleTran," "), kimmoRule))
             				
             				# add to the master graph list
             				self.fsasNodes.append(tmpfsanodes)
@@ -1776,7 +1776,7 @@ class KimmoControl:
 
         # take care of the anyset, if it was defined (make into a subset)
         if (anyset[0] and anyset[1]):
-        	self.ksubsets.append(KimmoSubset(anyset[0], string.join(anyset[1:len(anyset)]," ") ))
+        	self.ksubsets.append(KimmoSubset(anyset[0], str.join(anyset[1:len(anyset)]," ") ))
         	
         # print self.fsasNodes
         	
