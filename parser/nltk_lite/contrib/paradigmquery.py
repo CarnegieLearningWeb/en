@@ -148,9 +148,9 @@ class ParadigmQuery(object):
         ------------------------------------------------------------------------
         """
         # Set the nltk_lite.parse.tree tree for this query to the global sentence
-        string = str(self.parseList)
-        string2 = string.replace(":","").replace("')'","").replace("table(","").replace("','","").replace("'","").replace("/","")
-        self.nltktree = parse.tree.bracket_parse(string2)
+        strng = str(self.parseList)
+        strng2 = strng.replace(":","").replace("')'","").replace("table(","").replace("','","").replace("'","").replace("/","")
+        self.nltktree = parse.tree.bracket_parse(strng2)
         
         # Store the resulting nltk_lite.parse.tree tree
         self.parseTree = QuerySentence(self.nltktree)
