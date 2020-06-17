@@ -909,6 +909,10 @@ class Dictionary:
         """
         return form in self.indexFile
     
+    # 2to3 changed "has_key(x)" to "x in"
+    def __contains__(self, form):
+        return self.has_key(form)
+    
     #
     # Testing
     #
@@ -1036,6 +1040,10 @@ class _IndexFile:
         if hasattr(self, 'indexCache'):
             return key in self.indexCache
         return self.get(key) != None
+    
+    # 2to3 changed "has_key(x)" to "x in"
+    def __contains__(self, key):
+        return self.has_key(key)
     
     #
     # Index file
