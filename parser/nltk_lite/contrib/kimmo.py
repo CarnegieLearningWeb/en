@@ -18,6 +18,7 @@ also .rul compatible with old pckimmo.
 
 import tkinter
 import os, re, sys, types, string, glob, time, md5
+from functools cmp_to_key
 
 from en.parser.nltk_lite.contrib.fsa import *
 from en.parser.nltk_lite.corpora import get_basedir
@@ -2223,29 +2224,29 @@ class KimmoFSARule:
 
 
     def sorted_pairs(self, subsets):
-    	# pairs are ordered with the transition table, we want to order by the subset size.
-    	# returns a list of pairs AND their indices for use.
-    	# (index, pair) ; index represents the index of the position in the transitions table
-    	
-    	sorted_with_index = []
-    	for idx, pair in enumerate(self.pairs()):	# enumerate lists all & assigns an index
-    												# important to note that pairs() are in order
-    												# corresponding with transition table
-    		size1 = 1
-    		size2 = 1
-    		if pair.input() in subsets: size1 = len(subsets[pair.input()])
-    		if pair.output() in subsets: size2 = len(subsets[pair.output()])
-    		# setsize = size1 # + size2
-    		sorted_with_index.append([idx,pair,size1,size2])
-    	
-    	sorted_with_index.sort(lambda x,y: self.mycompare(x[2],y[2],x[3],y[3]) ) # lambda x, y: x[2] - y[2])
-    	return sorted_with_index
+        # pairs are ordered with the transition table, we want to order by the subset size.
+        # returns a list of pairs AND their indices for use.
+        # (index, pair) ; index represents the index of the position in the transitions table
+        
+        sorted_with_index = []
+        for idx, pair in enumerate(self.pairs()):   # enumerate lists all & assigns an index
+                                                    # important to note that pairs() are in order
+                                                    # corresponding with transition table
+            size1 = 1
+            size2 = 1
+            if pair.input() in subsets: size1 = len(subsets[pair.input()])
+            if pair.output() in subsets: size2 = len(subsets[pair.output()])
+            # setsize = size1 # + size2
+            sorted_with_index.append([idx,pair,size1,size2])
+        
+        sorted_with_index.sort(key=cmp_to_key(lambda x,y: self.mycompare(x[2],y[2],x[3],y[3]) ) ) # lambda x, y: x[2] - y[2])
+        return sorted_with_index
 
 
     # two field compare.
     def mycompare(self, x1, y1, x2=0, y2=0):
-    	if x1 == y1: return x2-y2
-    	else: return x1-y1
+        if x1 == y1: return x2-y2
+        else: return x1-y1
 
     def right_advance(self, current_states, input, output, subsets):
 

@@ -223,7 +223,7 @@ class BottomUpChartParse(AbstractParse):
             self._setprob(parse, prod_probs)
 
         # Sort by probability
-        parses.sort(lambda a,b: cmp(b.prob(), a.prob()))
+        parses.sort(key=lambda x: x.prob(), reverse=True)
         
         return parses
 
@@ -297,7 +297,7 @@ class InsideParse(BottomUpChartParse):
         @type chart: C{Chart}
         @rtype: C{None}
         """
-        queue.sort(lambda e1,e2:cmp(e1.prob(), e2.prob()))
+        queue.sort(key=lambda e1:e1.prob())
 
 # Eventually, this will become some sort of inside-outside parser:
 # class InsideOutsideParse(BottomUpChartParse):
@@ -353,7 +353,7 @@ class LongestParse(BottomUpChartParse):
     """
     # Inherit constructor
     def sort_queue(self, queue, chart):
-        queue.sort(lambda e1,e2: cmp(e1.length(), e2.length()))
+        queue.sort(key=lambda e1: e1.length())
 
 class BeamParse(BottomUpChartParse):
     """
@@ -379,7 +379,7 @@ class BeamParse(BottomUpChartParse):
         self._beam_size = beam_size
         
     def sort_queue(self, queue, chart):
-        queue.sort(lambda e1,e2:cmp(e1.prob(), e2.prob()))
+        queue.sort(key=lambda e1:e1.prob())
         if len(queue) > self._beam_size:
             split = len(queue)-self._beam_size
             if self._trace > 2:

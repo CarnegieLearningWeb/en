@@ -26,13 +26,10 @@ except:
             copy.update(self)
             return copy
             
-    def max(seq, key=None):
-        def _cmp(a,b): 
-            if key(b) > key(a): return 1
-            return -1
+    def max(seq, keyf=None):
         seq = [e for e in seq]
-        if key:
-            seq.sort(_cmp)
+        if keyf:
+            seq.sort(key=lambda x: keyf(x), reverse=True)
         else:
             seq.sort()
         return seq[0]

@@ -71,7 +71,7 @@ class KMeans(VectorSpace):
             # sort the means first (so that different cluster numbering won't
             # effect the distance comparison)
             for means in meanss:
-                means.sort(cmp = _vector_compare)
+                means.sort(key=lambda x: sum(x))
 
             # find the set of means that's minimally different from the others
             min_difference = min_means = None
@@ -152,12 +152,6 @@ class KMeans(VectorSpace):
     def __repr__(self):
         return '<KMeans Clusterer means=%s repeats=%d>' % \
                     (self._means, self._repeats)
-
-def _vector_compare(x, y):
-    xs, ys = sum(x), sum(y)
-    if xs < ys:     return -1
-    elif xs > ys:   return 1
-    else:           return 0
 
 #################################################################################
 

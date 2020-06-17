@@ -291,7 +291,7 @@ def variations(pattern):
         v = [p.strip("()") for p in v]
         if v not in V: V.append(v)
     # Longest-first.
-    V.sort(lambda a, b: len(b) - len(a))
+    V.sort(key=lambda a: len(a), reverse=True)
     return V
 
 # 1) Pattern NN matches /NN as well as /NNS tokens.
