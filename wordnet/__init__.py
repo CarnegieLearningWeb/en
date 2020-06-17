@@ -18,36 +18,25 @@ from . import wordnet as wn
 from . import wntools
 
 import re
+import unicodedata
 
 NOUNS = wn.N
 VERBS = wn.V
 ADJECTIVES = wn.ADJ
 ADVERBS = wn.ADV
 
-ignore_accents = [
-    ("á|ä|â|å|à", "a"), 
-    ("é|ë|ê|è", "e"), 
-    ("í|ï|î|ì", "i"), 
-    ("ó|ö|ô|ø|ò", "o"), 
-    ("ú|ü|û|ù", "u"), 
-    ("ÿ|ý", "y"), 
-    ("š", "s"), 
-    ("ç", "ç"), 
-    ("ñ", "n")
-]
 def _normalize(s):
     
     """ Normalize common accented letters, WordNet does not take unicode.
     """
     
-    if isinstance(s, int): return s
-    try: s = str(s)
-    except:
-        try: s = s.encode("utf-8")
-        except:
-            pass
-    for a, b in ignore_accents: s = re.sub(a, b, s)
-    return s    
+    if isinstance(s, int):
+        return s
+    if not isinstance(s, str):
+        raise TypeError("_normalize(%s)" % type(s).__name__)
+    nfkd_form = unicodedata.normalize('NFKD', s)
+    return "".join([c for c in nfkd_form if not unicodedata.combining(c)])
+
 
 def _synset(q, sense=0, pos=NOUNS):
 
