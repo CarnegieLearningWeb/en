@@ -5,10 +5,12 @@
 # Based on the Ruby Linguistics module by Michael Granger:
 # http://www.deveiate.org/projects/Linguistics/wiki/English
 
+import re
+from math import log, pow
 from .article import article
 from .numeral import spoken_number, thousands as numeral_thousands
 from .plural import plural
-from math import log, pow
+
 
 quantify_custom_plurals = {
     "built-in function" : "built-in functions"
@@ -64,10 +66,17 @@ def quantify(word, number=0):
             
         return stword + thword + _plural(word)
 
+def to_str(s):
+    if type(s) == str:
+        return s
+    return str(s)
+
 def conjunction(words, generalize=False):
     
     if generalize == True:
         words = _reflect(words)
+    else:
+        words = map(to_str, words)
     
     # Keep a count of each object in the list of words.
     count = {}
@@ -115,27 +124,30 @@ def conjunction(words, generalize=False):
 #print conjunction(["penguin", "polar bear"])
 #print conjunction(["whale"])
 
-reflect_readable_types = {
-    "<type '"         : "",
-    "<class '(.*)'\>" : "\\1 class",
-    "'>"              : "",
-    "objc.pyobjc"     : "Python Objective-C",
-    "objc_class"      : "Objective-C class",
-    "objc"            : "Objective-C",
-    "<objective-c class  (.*) at [0-9][0-9|a-z]*>" : "Objective-C \\1 class",
-    "bool"            : "boolean",
-    "int"             : "integer",
-    "long"            : "long integer",
-    "float"           : "float",
-    "str"             : "string",
-    "dict"            : "dictionary",
-    "NoneType"        : "None type",
-    "instancemethod"  : "instance method",
-    "builtin_function_or_method" : "built-in function",
-    "classobj"        : "class object",
-    "\."              : " ",
-    "_"               : " "          
-}
+# Python3 does not ever produce "<type 'foo'>" for any of the builtin objects,
+# Even the ones that are in the types module (which no longer contains the simple
+# ones, such as int and str) are now classes.
+
+reflect_readable_types = (
+    (re.compile("<class '(.*)'\>") , "\\1 class"),
+    (re.compile("objc.pyobjc")     , "Python Objective-C"),
+    (re.compile("objc_class")      , "Objective-C class"),
+    (re.compile("objc")            , "Objective-C"),
+    (re.compile("objective-c class  (.*) at [0-9][0-9|a-z]*>") , "Objective-C \\1 class"),
+    (re.compile("bool class")      , "boolean"),
+    (re.compile("int class")       , "integer"),
+    (re.compile("long class")      , "long integer"),
+    (re.compile("float class")     , "float"),
+    (re.compile("str class")       , "string"),
+    (re.compile("dict class")      , "dictionary"),
+    (re.compile("NoneType")        , "None"),
+    (re.compile("instancemethod class")  , "instance method"),
+    (re.compile("builtin_function_or_method class") , "built-in function"),
+    (re.compile("classobj")        , "class object"),
+    (re.compile("object class")    , "object"),
+    (re.compile("\.")              , " "),
+    (re.compile("_")               , " ")
+)
 
 def _reflect(object):
     
@@ -183,10 +195,9 @@ def _reflect(object):
             types.append(str(type(object)))
     
     # Clean up type strings.
-    import re
     for i in range(len(types)):
-        for p in reflect_readable_types:
-            types[i] = re.sub(p, reflect_readable_types[p], types[i])
+        for pattern, replacement in reflect_readable_types:
+            types[i] = pattern.sub(replacement, types[i])
     
     return types
 
